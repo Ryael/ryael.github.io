@@ -115,7 +115,7 @@ input[type='checkbox'] {
 /* Large, Colored Text */
 #pContent h1 {
 	font-family: "Cormorant Unicase";
-	color: #dd872a;
+	color: #990000;
 	font-size: 1.5em;
 	margin-top: 0px;
 	letter-spacing: 2px;
@@ -127,7 +127,7 @@ input[type='checkbox'] {
 /* Content Text */
 #pContent h2 {
 	font-family: "Raleway";
-	color: rgb(226, 226, 226);
+	color: #e36c6c;
 	font-size: 0.9em;
 	letter-spacing: 1px;
 	line-height: 1.3;
