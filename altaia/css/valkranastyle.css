@@ -52,7 +52,7 @@ body {
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: #ffeee5;
+  background-color: #fff9f9;
 }
 
 #container {
@@ -71,7 +71,7 @@ input[type='checkbox'] {
 
 .lbl-toggle {
 	display: block;
-	background-color: #ffeee5;
+	background-color: #fff9f9;
 	cursor: pointer;
 	padding-top: 20px;
 	width: 100%;
