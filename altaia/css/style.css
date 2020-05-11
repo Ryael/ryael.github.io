@@ -1590,17 +1590,17 @@ a.logo:hover{
     width: 200px;
     position: absolute;
     top: 100%;
-    left: 0;
+    left: 0%;
     padding: 0;
     background: rgba(255,255,255, .97);
 
     -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.05);
-    -moz-box-shadow:1px 1px 1px rgba(0,0,0,.05);
-    box-shadow:  0px 0px 0px 2px rgba(0,0,0,.05);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.05);
+    box-shadow:  0px 0px 1.5px 1.5px rgba(0,0,0,.05);
 }
 .mn-sub li{
     display: block;
-    width: 100%;
+    width: 50%;
     margin: 0 !important;
 }
 .inner-nav ul li .mn-sub li a{
@@ -1614,7 +1614,7 @@ a.logo:hover{
     margin: 0;
     padding: 11px 15px;
     font-size: 13px;
-    text-align: left;
+    text-align: center;
     text-transform: none;    
     border-left: none;
     border-right: none;
