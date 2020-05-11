@@ -1592,7 +1592,7 @@ a.logo:hover{
     top: 100%;
     left: 0;
     padding: 0;
-    background: rgba(30,30,30, .97);
+    background: rgba(255,255,255,1);
 }
 .mn-sub li{
     display: block;
@@ -4137,7 +4137,7 @@ a.logo:hover{
      text-decoration: underline;
 }
 .footer-copy{
-    margin-bottom: 30px;
+    margin-bottom: 5px;
     text-transform: uppercase;
     letter-spacing: 0.5em;
 }
