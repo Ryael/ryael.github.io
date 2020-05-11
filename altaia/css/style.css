@@ -1592,7 +1592,11 @@ a.logo:hover{
     top: 100%;
     left: 0;
     padding: 0;
-    background: rgba(255,255,255,1);
+    background: rgba(255,255,255, .97);
+
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.05);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.05);
+    box-shadow:  0px 0px 0px 2px rgba(0,0,0,.05);
 }
 .mn-sub li{
     display: block;
@@ -1627,7 +1631,7 @@ a.logo:hover{
 .inner-nav ul li .mn-sub li a:hover,
 .mn-sub li a.active{
     background: rgba(255,255,255, .09);
-    color: #f5f5f5 !important;
+    color: #000 !important;
 }
 
 .mn-sub li ul{
