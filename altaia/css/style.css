@@ -1917,7 +1917,7 @@ a.logo:hover{
 .main-nav.dark .mobile-nav{
     background-color: transparent;
     border-color: transparent;
-    color: rgba(255,255,255, .9);
+    color: rgba(10,10,10, .95);
 }
 .main-nav.dark .mobile-nav:hover,
 .main-nav.dark .mobile-nav.active{
