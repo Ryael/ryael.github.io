@@ -981,6 +981,10 @@ a.btn-mod:focus{
     background: rgba(228,25,25, .75);
     color: #fff;
 }
+.form div.error a,
+.form div.error a:hover{
+    color: #fff;
+}
 .form div.success{
     margin-top: 20px;
     padding: 13px 20px;
