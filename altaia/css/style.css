@@ -2952,6 +2952,35 @@ a.logo:hover{
    Team
    ============================== */
 
+    .flex-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: center;
+        align-items: flex-start;
+    }
+    .flex-item:nth-child(1) {
+        order: 0;
+        flex: 0 1 auto;
+        align-self: center;
+        width: 100%;
+    }
+    .flex-item:nth-child(2) {
+        order: 0;
+        flex: 0 1 auto;
+        align-self: center;
+        width: 100%;
+    }
+    @media only screen and (min-width: 768px) {
+        .flex-item:nth-child(1) {
+            width: 60%;
+        }
+        .flex-item:nth-child(2) {
+            width: 30%;
+        }
+    }    
+
 .team-grid{
     
 }
