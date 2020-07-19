@@ -1591,10 +1591,10 @@ a.logo:hover{
 
 .mn-sub{
     display: none;
-    width: 200px;
+    width: 150px;
     position: absolute;
     top: 100%;
-    left: 0%;
+    left: 0;
     padding: 0;
     background: rgba(255,255,255, .97);
 
@@ -1602,9 +1602,10 @@ a.logo:hover{
     -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.05);
     box-shadow:  0px 0px 1.5px 1.5px rgba(0,0,0,.05);
 }
+
 .mn-sub li{
     display: block;
-    width: 50%;
+    width: 100%;
     margin: 0 !important;
 }
 .inner-nav ul li .mn-sub li a{
