@@ -5743,7 +5743,7 @@ section:hover .small-item-carousel .owl-next{
 .gallery figure {
     align-self:flex-end;
     display:inline-block;
-    margin:10px;
+    margin:5px;
     margin-bottom:10px;
     vertical-align:middle;
 }
