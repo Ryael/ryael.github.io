@@ -5731,6 +5731,53 @@ section:hover .small-item-carousel .owl-next{
     text-transform: uppercase;
 }
 
+/* ==============================
+   Gallery
+   ============================== */
+
+.gallery {
+    padding-top:.5rem;
+    padding-bottom:.5rem;
+}
+
+.gallery figure {
+    align-self:flex-end;
+    display:inline-block;
+    margin:10px;
+    margin-bottom:10px;
+    vertical-align:middle;
+}
+
+.gallery img{
+    width: 100%;
+
+}
+
+.gallery .figwrapper {
+    display:table;
+    table-layout:auto
+}
+
+.gallery figure figcaption {
+    background-color: var(--darkgrey);
+    background-color: var(--darkbgtext);
+    caption-side:bottom;
+    color: var(--lightgrey);
+    color: var(--lightbg);
+    display:table-caption;
+    padding: .2em;
+    word-break:break-all;
+}
+
+.gallery-row {
+    margin:0px;
+    padding:0px;
+    width:100%;
+}
+
+/* ==============================
+   Special demos
+   ============================== */
 
 /* ==============================
    Special demos
