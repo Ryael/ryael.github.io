@@ -3043,6 +3043,35 @@ a.logo:hover{
     transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
 }
 
+.team-item-detail-emote{
+    opacity: 0;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    padding: 20px 23px 1px;
+    font-size: 14px;
+    font-weight: 300;
+    color: #777;
+    text-align: center;
+    z-index: 2;
+    
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    transform: translateY(-50%);
+    
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    
+    -webkit-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);  
+    -moz-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+    -o-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
+    -ms-transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000); 
+    transition: all 0.27s cubic-bezier(0.000, 0.000, 0.580, 1.000);
+}
+
 .team-item-descr{
     color: #777;
     text-align:center;
@@ -3091,6 +3120,11 @@ a.logo:hover{
 .no-mobile .team-item:hover .team-item-detail{
     opacity: 1;
 }
+
+.no-mobile .team-item:hover .team-item-detail-emote{
+    opacity: 1;
+}
+
 .no-mobile .team-item:hover .team-item-descr{    
     color: #111;
 }
@@ -3105,6 +3139,11 @@ a.logo:hover{
 .team-item.js-active .team-item-detail{
     opacity: 1;
 }
+
+.team-item.js-active .team-item-detail-emote{
+    opacity: 1;
+}
+
 .team-item.js-active .team-item-descr{    
     color: #111;
 }
@@ -5738,18 +5777,18 @@ section:hover .small-item-carousel .owl-next{
 .gallery {
     padding-top:.5rem;
     padding-bottom:.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap
 }
 
 .gallery figure {
-    align-self:flex-end;
-    display:inline-block;
-    margin:5px;
+    /*align-self:flex-end; */
+    /*display:inline-block; */
+    margin:10px;
     margin-bottom:10px;
-    vertical-align:middle;
-}
-
-.gallery img{
-    width: 100%;
+    /*vertical-align:middle;*/
 
 }
 
