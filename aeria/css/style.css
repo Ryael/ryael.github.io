@@ -5783,6 +5783,14 @@ section:hover .small-item-carousel .owl-next{
     flex-wrap: wrap
 }
 
+.gallery::after {
+    content: "";
+    flex: auto;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap
+  }
+
 .gallery figure {
     /*align-self:flex-end; */
     /*display:inline-block; */
