@@ -378,7 +378,7 @@ a{
 }
 a:hover{
     color: #888;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -6794,7 +6794,7 @@ body, [class*=hex__] {
   /* figcaption overlay */
   transform: translatey(calc(var(--not-hl)*100%));
   /* out of sight in no overlay case */
-  background: rgba(255, 255, 255, calc(var(--hl)*.65));
+  background: rgba(255, 255, 255, calc(var(--hl)*.95));
   /* background alpha also depends on it */
   transition: background-color 0.35s ease-out, transform 0s calc(var(--not-hl)*0.35s);
 }
