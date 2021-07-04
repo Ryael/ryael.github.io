@@ -1,0 +1,156 @@
+* {
+  margin: 0;
+}
+
+body, [class*=hex__] {
+  display: grid;
+}
+
+.hex {
+  /* so image doesn't get distorted */
+}
+.hex__grid {
+  --w: min(2*100vw/3 - 12px, 180px);
+  /* width is fixed unless screen is really small */
+  --h: calc(var(--w)/0.45);
+  /* height based on aspect ratio */
+  --cross: calc(0.25*var(--h));
+  /* by how much hexagon boxes overlap (cross) each other */
+  grid-template-columns: repeat(auto-fit, calc(.5*var(--w)));
+  place-content: center;
+  /* columns may not add up to its width, so middle align them */
+  place-self: center;
+  /* has limited width, put it in middle of parent */
+  overflow: hidden;
+  /* prevent element bleed */
+  position: relative;
+  /* for offsetTop in JS */
+  /* compensate vertical grid padding*/
+  margin: calc(-.5*var(--h)) 0;
+  /* compensate 1st row negative margin 
+   * and allow space for images entering on 1st/ last rows */
+  padding: calc(var(--cross) + .5*var(--h)) 0 calc(.5*var(--h));
+  width: 100%;
+  /* needed in Firefox because of place-self */
+  max-width: min(100%, calc((2*4 + 1)*.5*var(--w)));
+}
+.hex__cell {
+  --hl: 0;
+  /* overlay switch; if it's 0, no overlay shown */
+  --not-hl: calc(1 - var(--hl));
+  --dtf: calc(var(--idx) - var(--min, 0));
+  /* animation delay factor */
+  grid-column-end: span 2;
+  /* each hex occupies 2 columns */
+  margin-top: calc(-1*var(--cross));
+  /* hex box overlaps with row above */
+  width: var(--w);
+  height: var(--h);
+  transform-origin: 50% calc(50%*(1 + var(--dir)));
+  /* depends on scroll direction */
+  --poly:
+  	polygon(4px calc(25% + 1.5349440209px),
+  					50% 5.9793884654px,
+  					calc(100% - 4px) calc(25% + 1.5349440209px),
+  					calc(100% - 4px) calc(100% - (25% + 1.5349440209px)),
+  					50% calc(100% - 5.9793884654px),
+  					4px calc(100% - (25% + 1.5349440209px)));
+  -webkit-clip-path: var(--poly);
+  /* because Safari on iOS still needs prefix */
+  clip-path: var(--poly);
+  /* if it's outside of viewport */
+  /* otherwise animate into view on load and when it loses .out class */
+  /* messes up click on touch without MQ */
+  /* widest viewport scenario */
+  /* intermediate viewport scenarios */
+  /* narrowest viewport scenario */
+}
+.hex__cell.out {
+  opacity: 0;
+}
+.hex__cell:not(.out) {
+  animation: enter 0.875s calc(var(--dtf)*.1s) backwards;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hex__cell:hover, .hex__cell:focus-within {
+    --hl: 1 ;
+  }
+}
+@media (min-width: 822px) {
+  .hex__cell:nth-child(8n+5) {
+    grid-column-start: 2;
+  }
+}
+@media (min-width: 732px) and (max-width: 821px) {
+  .hex__cell:nth-child(7n+5) {
+    grid-column-start: 2;
+  }
+}
+@media (min-width: 642px) and (max-width: 731px) {
+  .hex__cell:nth-child(6n+4) {
+    grid-column-start: 2;
+  }
+}
+@media (min-width: 552px) and (max-width: 641px) {
+  .hex__cell:nth-child(5n+4) {
+    grid-column-start: 2;
+  }
+}
+@media (min-width: 462px) and (max-width: 551px) {
+  .hex__cell:nth-child(4n+3) {
+    grid-column-start: 2;
+  }
+}
+@media (min-width: 372px) and (max-width: 461px) {
+  .hex__cell:nth-child(3n+3) {
+    grid-column-start: 2;
+  }
+}
+@media (min-width: 282px) and (max-width: 371px) {
+  .hex__cell:nth-child(2n+2) {
+    grid-column-start: 2;
+  }
+}
+@media (max-width: 281px) {
+  .hex__cell:nth-child(2n) {
+    grid-column-start: 2;
+  }
+}
+.hex__img, .hex__txt {
+  grid-area: 1/1;
+  /* stack image and overlay on top of each other */
+  width: 100%;
+  height: 100%;
+}
+.hex__img {
+  object-fit: cover;
+}
+.hex__txt {
+  /* figcaption overlay */
+  transform: translatey(calc(var(--not-hl)*100%));
+  /* out of sight in no overlay case */
+  background: rgba(255, 255, 255, calc(var(--hl)*.65));
+  /* background alpha also depends on it */
+  transition: background-color 0.35s ease-out, transform 0s calc(var(--not-hl)*0.35s);
+}
+.hex__link {
+  /* actual link styles */
+  place-content: center;
+  transform: translatey(calc(var(--not-hl)*2em));
+  opacity: var(--hl);
+  color: #777;
+  font: 1em/1.5 arial, sans-serif;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.35s ease-out;
+  transition-property: transform, opacity;
+}
+
+/* hex enter animation on load/ scroll */
+@keyframes enter {
+  0% {
+    transform: perspective(25em) translate3d(0, calc(var(--dir)*50%), -29em);
+    opacity: 0;
+  }
+}
