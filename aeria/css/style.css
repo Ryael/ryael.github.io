@@ -235,7 +235,7 @@ div:focus.focus-visible{
     outline-offset: 0 !important;
 }
 
-embed, object, video{
+:not([draggable]), embed, object, video{
     max-width: 100%;
     height: auto;
 }
