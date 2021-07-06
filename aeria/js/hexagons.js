@@ -3,7 +3,7 @@ CELLS = [..._GRID.children].map(c => ({ _el: c })),
 CLS = 'out',
 N = CELLS.length;
 
-let win_h,hex_h,dir = 1,y_prv;
+let win_h,hex_h,dir = 1,y_prv,_hl;
 
 function move(ini = 0) {
   let y_nxt = _GRID.getBoundingClientRect().top,
@@ -52,17 +52,22 @@ size(1);
 addEventListener('resize', size, false);
 addEventListener('scroll', move, false);
 
-/* click to show overlay if no :hover/ :focus */
+/* what happens on click */
 addEventListener('click', e => {
-  const _t = e.target;
+  const _t = e.target,
+  _hl = CELLS.filter(c => +getComputedStyle(c._el).getPropertyValue('--hl') === 1);
 
+  /* if an image was clicked, bring up overlay */
   if (_t.classList.contains('hex__img')) {
-    const _p = _t.parentNode,
-    _hl = CELLS.filter(c => +getComputedStyle(c._el).getPropertyValue('--hl') === 1);
+    const _p = _t.parentNode;
 
-    if (_p !== _hl) {
-      if (_hl) _hl.forEach(c => c._el.style.setProperty('--hl', 0));
-      _p.style.setProperty('--hl', 1);
-    }
+    if (_hl.length && _p !== _hl[0]) /* and remove it from other hex, if any */
+      _hl.forEach(c => c._el.style.setProperty('--hl', 0));
+    _p.style.setProperty('--hl', 1);
   }
+  /* otherwise, if the click was outside hexagons and there's a hex with overlay
+   * remove said overlay */else
+    if (_hl.length && (_t === _GRID || !_t.className.match(/hex/gi))) {
+      _hl.forEach(c => c._el.style.setProperty('--hl', 0));
+    }
 });
