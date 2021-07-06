@@ -939,10 +939,10 @@ a.btn-mod:focus{
     padding-right: 10px;
 }
 .form textarea{
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
-    text-transform: uppercase !important;
-    letter-spacing: 1px;
+    text-transform: none !important;
+    
     color: #777;
     border-color: rgba(0,0,0, .1);
     outline: none;
