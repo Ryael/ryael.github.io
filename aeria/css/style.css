@@ -265,7 +265,7 @@ div:focus.focus-visible{
     outline-offset: 0 !important;
 }
 
-:not([draggable]), embed, object, video{
+embed, object, video{
     max-width: 100%;
     height: auto;
 }
@@ -6765,9 +6765,9 @@ section:hover .small-item-carousel .owl-next{
     padding-top:.5rem;
     padding-bottom:.5rem;
     display: flex;!important
-    justify-content: center;!important
-    align-items: center;!important
-    flex-wrap: wrap;!important
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .gallery::after {
@@ -6775,7 +6775,7 @@ section:hover .small-item-carousel .owl-next{
     flex: auto;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap
+    flex-wrap: wrap;
   }
 
 .gallery figure {
