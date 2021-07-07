@@ -1156,40 +1156,49 @@ function initPageSliders(){
     var sp_close_button = $(".sp-close-button");
     var sp_overlay = $(".sp-overlay");
     
+    var sp_close_button_scroll_position;
+   
     function sp_panel_close(){
         side_panel.animate({
             opacity: 0,
             left: -270
         }, 500, "easeOutExpo");
         sp_overlay.fadeOut();
-        
-        
+       
+       
         if ($(".owl-carousel").lenth) {
             $(".owl-carousel").data("owlCarousel").play();
         }
+
+        $("html").css("overflow-y", "scroll");
+        $("body").css("overflow", "initial");
+        $(window).scrollTop(sp_close_button_scroll_position);
     }
-    
+   
     function init_side_panel(){
         (function($){
             "use strict";
-            
+           
             sp_button.click(function(){
-            
+           
                 side_panel.animate({
                     opacity: 1,
                     left: 0
                 }, 500, "easeOutExpo");
-                
+               
                 setTimeout(function(){
                     sp_overlay.fadeIn();
                 }, 100);
-                
+               
                 if ($(".owl-carousel").lenth) {
                     $(".owl-carousel").data("owlCarousel").stop();
                 }
-                
+               
+                sp_close_button_scroll_position = $(window).scrollTop();
+                $("html, body").css("overflow", "hidden");
+
                 return false;
-            
+           
             });
             
             sp_close_button.click(function(){
