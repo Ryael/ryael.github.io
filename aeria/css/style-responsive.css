@@ -3,7 +3,7 @@
 [Responsive Stylesheet]
 
 Project: Rhythm
-Version: 2.14
+Version: 2.16
 Primary use: MultiPurpose Template  
 -------------------------------------------------------------------*/
 
@@ -17,6 +17,8 @@ Primary use: MultiPurpose Template
 4. Phone
 5. Small Phone
 6. Max Height 768
+7. IOS Background Fix
+8. Print Styles Fix
 -------------------------------------------------------------------*/
 
 
@@ -26,7 +28,6 @@ Primary use: MultiPurpose Template
 
 @media only screen and (max-width: 1366px) {
 	
-    	
     .inner-nav ul li {
         margin-left: 25px;
     }
@@ -850,5 +851,22 @@ Primary use: MultiPurpose Template
 @media only screen and (min-width: 1024px) and (max-height: 1366px) and (-webkit-min-device-pixel-ratio: 1.5) {
     html:not(.no-touch) .page-section, html:not(.no-touch) .home-section, html:not(.no-touch) .small-section{
         background-attachment: scroll;
+    }
+}
+
+
+/* ==============================
+   Print Styles Fix
+   ============================== */
+  
+@media print {
+    .main-nav{
+        display: none;
+    }
+    .buy-button{
+        display: none;
+    }
+    img{
+        display: block;
     }
 }

@@ -6,15 +6,14 @@
      Scripts initialization
      --------------------------------------------- */
     
-    $(window).load(function(){
+    $(window).on("load", function(){
         
         // Page loader
         
         $("body").imagesLoaded(function(){
             $(".page-loader div").fadeOut();
             $(".page-loader").delay(200).fadeOut("slow");
-        });
-        
+        });        
         
         initWorkFilter();
         init_scroll_navigate();
@@ -50,8 +49,7 @@
         init_masonry();
     });
     
-    $(window).resize(function(){
-        
+    $(window).resize(function(){        
         init_classic_menu_resize();
         init_side_panel_resize()
         js_height_init();
@@ -182,7 +180,7 @@
         });
         
         // Transpaner menu
-        
+                
         if ($(".main-nav").hasClass("transparent")){
            $(".main-nav").addClass("js-transparent"); 
         }
@@ -222,6 +220,17 @@
                      
         });
         
+        $(document).on("click", function(event){            
+            if ($(window).width() <= 1024) {
+                var $trigger = $(".main-nav");
+                if ($trigger !== event.target && !$trigger.has(event.target).length) {
+                    desktop_nav.slideUp("slow", "easeOutExpo").removeClass("js-opened");
+                    mobile_nav.removeClass("active");
+                    mobile_nav.attr("aria-expanded", "false");
+                }
+            }
+        });
+        
         mobile_nav.keydown(function(e){
             if (e.keyCode == 13 || e.keyCode == 32) {
                 if (desktop_nav.hasClass("js-opened")) {
@@ -256,7 +265,8 @@
         
         mnHasSub.attr({
             "role": "button",
-            "aria-expanded": "false"
+            "aria-expanded": "false",
+            "aria-haspopup": "true"
         });
         
         $(".mobile-on .mn-has-sub").find(".fa:first").removeClass("fa-angle-right").addClass("fa-angle-down");
@@ -512,9 +522,9 @@
     /* ---------------------------------------------
      Shortcodes
      --------------------------------------------- */
-    // Tabs minimal	
+    	
     function init_shortcodes(){
-    
+        // Tabs minimal
         var tpl_tab_height;
         $(".tpl-minimal-tabs > li > a").click(function(){
         
@@ -533,36 +543,45 @@
         // Accordion        
         $(".accordion").each(function(){
             var allPanels = $(this).children("dd").hide();
+            var allTabs = $(this).children("dt").children("a");
+            allTabs.attr("role", "button");
             $(this).children("dd").first().slideDown("easeOutExpo");
             $(this).children("dt").children("a").first().addClass("active");
+            $(this).children("dt").children("a").attr("aria-expanded", "false");
+            $(this).children("dt").children("a").first().attr("aria-expanded", "true");
                         
             $(this).children("dt").children("a").click(function(){        
                 var current = $(this).parent().next("dd");
-                $(".accordion > dt > a").removeClass("active");
+                allTabs.removeClass("active");
                 $(this).addClass("active");
+                allTabs.attr("aria-expanded", "false");
+                $(this).attr("aria-expanded", "true");
                 allPanels.not(current).slideUp("easeInExpo");
                 $(this).parent().next().slideDown("easeOutExpo");                
                 return false;                
             });
             
-         });
-        
-        
+         });        
         
         // Toggle
         var allToggles = $(".toggle > dd").hide();
+        var allTabs = $(".toggle > dt > a");
+        allTabs.attr({
+            "role": "button",
+            "aria-expanded": "false"
+            });
         
         $(".toggle > dt > a").click(function(){
         
-            if ($(this).hasClass("active")) {
-            
+            if ($(this).hasClass("active")) {            
                 $(this).parent().next().slideUp("easeOutExpo");
                 $(this).removeClass("active");
-                
+                $(this).attr("aria-expanded", "false");                
             }
             else {
                 var current = $(this).parent().next("dd");
                 $(this).addClass("active");
+                $(this).attr("aria-expanded", "true");
                 $(this).parent().next().slideDown("easeOutExpo");
             }
             
@@ -648,18 +667,44 @@ function initPageSliders(){
     (function($){
         "use strict";
         
-        function owl_keynav(el){
-            el.find(".owl-page").attr({
+        function owl_keynav(el){            
+            el.find(".owl-prev, .owl-next").attr({
                 "role": "button",
                 "tabindex": "0"
             });
-            $(".owl-carousel").each(function(){
-                var owl = $(this).data('owlCarousel');
-                $(this).find(".owl-page").keydown(function(e){
-                    if (event.key === "Enter") {
-                        owl.goTo($(this).index());
-                    }
-                });
+            el.prepend(el.find(".owl-controls"));     
+            el.on("click", ".owl-page, .owl-prev, .owl-next", function(e){
+                var this_owl = el.data("owlCarousel");
+                this_owl.stop();
+            });            
+            el.on("keydown", ".owl-prev", function(e){
+                if (e.keyCode == 13 || e.keyCode == 32) {
+                    var this_owl = el.data("owlCarousel");
+                    this_owl.prev();
+                    return false;                    
+                }
+            });
+            el.on("keydown", ".owl-next", function(e){
+                if (e.keyCode == 13 || e.keyCode == 32) {
+                    var this_owl = el.data("owlCarousel");
+                    this_owl.next();
+                    return false;                   
+                }
+            });
+        }
+        
+        function owl_update(el){       
+            el.find(".owl-item").attr({
+                "aria-hidden": "true"
+            });
+            el.find(".owl-item.active").attr({
+                "aria-hidden": "false"
+            });
+            el.find(".owl-item a, .owl-item button, .owl-item input").attr({
+                "tabindex": "-1"
+            });
+            el.find(".owl-item.active a, .owl-item.active button, .owl-item.active input").attr({
+                "tabindex": "0"
             });
         }
         
@@ -670,11 +715,13 @@ function initPageSliders(){
             autoHeight: true,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
-        // Fullwidth slider
+        // Fullwidth slider fade
         $(".fullwidth-slider-fade").owlCarousel({
             transitionStyle: "fadeUp",
             slideSpeed: 350,
@@ -682,8 +729,10 @@ function initPageSliders(){
             autoHeight: true,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Fullwidth gallery
@@ -696,24 +745,28 @@ function initPageSliders(){
             navigation: false,
             pagination: false,
             lazyLoad: true,
-            afterInit: owl_keynav
+            addClassActive : true,
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Item carousel
         $(".item-carousel").owlCarousel({
             autoPlay: 2500,
-            //stopOnHover: true,
+            stopOnHover: false,
             items: 3,
             itemsDesktop: [1199, 3],
             itemsTabletSmall: [768, 3],
             itemsMobile: [480, 1],
-            navigation: false,
+            navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
-        // Item carousel
+        // Small item carousel
         $(".small-item-carousel").owlCarousel({
             autoPlay: 2500,
             stopOnHover: true,
@@ -722,10 +775,12 @@ function initPageSliders(){
             itemsTabletSmall: [768, 3],
             itemsMobile: [480, 2],
             pagination: false,
-            navigation: false,
+            navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Single carousel
@@ -734,8 +789,10 @@ function initPageSliders(){
             autoHeight: true,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Content Slider
@@ -745,8 +802,10 @@ function initPageSliders(){
             autoHeight: true,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
 
         // Photo slider
@@ -759,8 +818,10 @@ function initPageSliders(){
             autoHeight: true,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         }); 
         
         // Work slider
@@ -770,8 +831,10 @@ function initPageSliders(){
             autoHeight: true,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Blog posts carousel
@@ -785,8 +848,10 @@ function initPageSliders(){
             pagination: false,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Blog posts carousel alt
@@ -799,8 +864,10 @@ function initPageSliders(){
             pagination: false,
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Image carousel
@@ -813,8 +880,10 @@ function initPageSliders(){
             itemsMobile: [480, 1],
             navigation: true,
             lazyLoad: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
-            afterInit: owl_keynav
+            addClassActive : true,
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            afterInit: owl_keynav,
+            afterAction: owl_update
         });
         
         // Fullwidth slideshow
@@ -829,9 +898,10 @@ function initPageSliders(){
             slideSpeed: 350,
             singleItem: true,
             autoHeight: true,
+            addClassActive : true,
             pagination: false,
             navigation: true,
-            navigationText: ["<i class='fa fa-angle-left' aria-hidden='true'></i>", "<i class='fa fa-angle-right' aria-hidden='true'></i>"],
+            navigationText: ["<span class='sr-only'>Previous Slide</span><i class='fa fa-angle-left' aria-hidden='true'></i>", "<span class='sr-only'>Next Slide</span><i class='fa fa-angle-right' aria-hidden='true'></i>"],
             afterAction : syncPosition,
             responsiveRefreshRate : 200
         });
@@ -920,11 +990,6 @@ function initPageSliders(){
                     owl.next();
                 }
         });
-        
-        if ($(".owl-carousel").length) {
-            var owl = $(".owl-carousel").data('owlCarousel');
-            owl.reinit();
-        }
 
     })(jQuery);
 };
@@ -936,6 +1001,17 @@ function initPageSliders(){
     
     var fm_menu_wrap = $("#fullscreen-menu");
     var fm_menu_button = $(".fm-button");
+    fm_menu_button.attr({
+        "role": "button",
+        "aria-expanded": "false"
+    });
+    
+    fm_menu_button.keydown(function(e){
+        if (e.keyCode == 32) {
+            $(this).trigger("click");
+            return false;
+        }
+    });
     
     function init_fullscreen_menu(){
         
@@ -946,7 +1022,8 @@ function initPageSliders(){
             }
             else{
                 if ($(this).hasClass("active")) {
-                    $(this).removeClass("active").css("z-index", "2001").addClass("animation-process");;
+                    
+                    $(this).removeClass("active").attr("aria-expanded", "false").css("z-index", "2001").addClass("animation-process");;
                     
                     fm_menu_wrap.find(".fm-wrapper-sub").fadeOut("fast", function(){
                         fm_menu_wrap.fadeOut(function(){
@@ -965,7 +1042,7 @@ function initPageSliders(){
                     if ($(".owl-carousel").lenth) {
                         $(".owl-carousel").data("owlCarousel").stop();
                     }
-                    $(this).addClass("active").css("z-index", "2001").addClass("animation-process");
+                    $(this).addClass("active").attr("aria-expanded", "true").css("z-index", "2001").addClass("animation-process");
                     
                     fm_menu_wrap.fadeIn(function(){
                         fm_menu_wrap.find(".fm-wrapper-sub").addClass("js-active");
@@ -986,7 +1063,7 @@ function initPageSliders(){
             else {
                 if (e.keyCode == 27 && fm_menu_button.hasClass("active")) {
                     
-                    fm_menu_button.removeClass("active").css("z-index", "2001").addClass("animation-process");;
+                    fm_menu_button.removeClass("active").attr("aria-expanded", "false").css("z-index", "2001").addClass("animation-process");;
                     
                     fm_menu_wrap.find(".fm-wrapper-sub").fadeOut("fast", function(){
                         fm_menu_wrap.fadeOut(function(){
@@ -1003,45 +1080,6 @@ function initPageSliders(){
                     return false;
                     
                 }
-            }
-            
-        });
-        
-        fm_menu_button.click(function(){
-            
-            if ($(this).hasClass("animation-process")){
-                return false;
-            }
-            else{
-                if ($(this).hasClass("active")) {
-                    $(this).removeClass("active").css("z-index", "2001").addClass("animation-process");;
-                    
-                    fm_menu_wrap.find(".fm-wrapper-sub").fadeOut("fast", function(){
-                        fm_menu_wrap.fadeOut(function(){
-                            fm_menu_wrap.find(".fm-wrapper-sub").removeClass("js-active").show();
-                            fm_menu_button.css("z-index", "1030").removeClass("animation-process");
-                            
-                        });
-                    });
-                    
-                    if ($(".owl-carousel").lenth) {
-                        $(".owl-carousel").data("owlCarousel").play();
-                    }
-                    
-                }
-                else {
-                    if ($(".owl-carousel").lenth) {
-                        $(".owl-carousel").data("owlCarousel").stop();
-                    }
-                    $(this).addClass("active").css("z-index", "2001").addClass("animation-process");
-                    
-                    fm_menu_wrap.fadeIn(function(){
-                        fm_menu_wrap.find(".fm-wrapper-sub").addClass("js-active");
-                        fm_menu_button.removeClass("animation-process");
-                    });
-                }
-                
-                return false;
             }
             
         });
@@ -1073,16 +1111,30 @@ function initPageSliders(){
         var fmHasSub = $(".fm-has-sub");
         var fmThisLi;
         
+        fmHasSub.attr({
+            "role": "button",
+            "aria-expanded": "false"
+        });
+        
+        fmHasSub.keydown(function(e){
+            if (e.keyCode == 32) {
+                $(this).trigger("click");
+                return false;
+            }
+        });
+        
         fmHasSub.click(function(){
         
             fmThisLi = $(this).parent("li:first");
             if (fmThisLi.hasClass("js-opened")) {
+                $(this).attr("aria-expanded", "false");
                 fmThisLi.find(".fm-sub:first").slideUp(function(){
                     fmThisLi.removeClass("js-opened");
                     fmThisLi.find(".fm-has-sub").find(".fa:first").removeClass("fa-angle-up").addClass("fa-angle-down");
                 });
             }
             else {
+                $(this).attr("aria-expanded", "true");
                 $(this).find(".fa:first").removeClass("fa-angle-down").addClass("fa-angle-up");
                 fmThisLi.addClass("js-opened");
                 fmThisLi.find(".fm-sub:first").slideDown();
@@ -1161,16 +1213,30 @@ function initPageSliders(){
             var spHasSub = $(".sp-has-sub");
             var spThisLi;
             
+            spHasSub.attr({
+                "role": "button",
+                "aria-expanded": "false"
+            });
+            
+            spHasSub.keydown(function(e){
+                if (e.keyCode == 32) {
+                    $(this).trigger("click");
+                    return false;
+                }
+            });
+            
             spHasSub.click(function(){
             
                 spThisLi = $(this).parent("li:first");
                 if (spThisLi.hasClass("js-opened")) {
+                    $(this).attr("aria-expanded", "false");
                     spThisLi.find(".sp-sub:first").slideUp(function(){
                         spThisLi.removeClass("js-opened");
                         spThisLi.find(".sp-has-sub").find(".fa:first").removeClass("fa-angle-up").addClass("fa-angle-down");
                     });
                 }
                 else {
+                    $(this).attr("aria-expanded", "true");
                     $(this).find(".fa:first").removeClass("fa-angle-down").addClass("fa-angle-up");
                     spThisLi.addClass("js-opened");
                     spThisLi.find(".sp-sub:first").slideDown();
@@ -1229,8 +1295,8 @@ function initWorkFilter(){
      }
      
      $(".filter").click(function(){
-         $(".filter").removeClass("active");
-         $(this).addClass("active");
+         $(".filter").removeClass("active").attr("aria-selected", "false");
+         $(this).addClass("active").attr("aria-selected", "true");
          fselector = $(this).attr('data-filter');
 
          work_grid.imagesLoaded(function(){
@@ -1265,7 +1331,7 @@ function initWorkFilter(){
      });
      
      // Lazy loading plus isotope filter
-     $(".img-lazy-work").load(function(){
+     $(".img-lazy-work").on("load", function(){
          masonry_update();
      });     
      function masonry_update(){
@@ -1342,7 +1408,9 @@ function init_wow(){
         
         if ($("body").hasClass("appear-animate")){
            wow.init(); 
-        }        
+        } else{
+            $(".wow").css("opacity", "1");
+        }
         
     })(jQuery);
 }
