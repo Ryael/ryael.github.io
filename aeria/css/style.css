@@ -243,10 +243,10 @@ iframe{
 }
 a, b, div, ul, li{
     -webkit-tap-highlight-colo
-:not([draggable]), embed, object, video{
+:not([draggable]), embed, object, video
     max-width: 100%;
     height: auto;
-}; 
+; 
     -moz-outline-: none;
 }
 a:focus:not(.focus-visible),
