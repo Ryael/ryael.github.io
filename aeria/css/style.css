@@ -242,11 +242,8 @@ iframe{
     border: none;
 }
 a, b, div, ul, li{
-    -webkit-tap-highlight-colo
-:not([draggable]), embed, object, video
-    max-width: 100%;
-    height: auto;
-; 
+    -webkit-tap-highlight-color: rgba(0,0,0,0); 
+    -webkit-tap-highlight-color: transparent; 
     -moz-outline-: none;
 }
 a:focus:not(.focus-visible),
@@ -265,7 +262,7 @@ div:focus.focus-visible{
     outline-offset: 0 !important;
 }
 
-:not([draggable]), embed, object, video{
+embed, object, video{
     max-width: 100%;
     height: auto;
 }
@@ -4264,6 +4261,10 @@ a.logo:hover{
 .footer a:hover{
     color: #111;
      text-decoration: underline;
+}
+.footer img{
+    max-width: 100%;
+    height: auto;
 }
 .footer-copy{
     margin-bottom: 5px;

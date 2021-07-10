@@ -2,7 +2,7 @@
   margin: 0;
 }
 
-body, [class*=hex__] {
+[class*=hex__] {
   display: grid;
 }
 
@@ -26,7 +26,7 @@ body, [class*=hex__] {
   position: relative;
   /* for offsetTop in JS */
   /* compensate vertical grid padding*/
-  margin: calc(-.5*var(--h)) 0;
+  margin: calc(-.5*var(--h)) auto;
   /* compensate 1st row negative margin 
    * and allow space for images entering on 1st/ last rows */
   padding: calc(var(--cross) + .5*var(--h)) 0 calc(.5*var(--h));
